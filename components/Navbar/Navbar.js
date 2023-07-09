@@ -13,9 +13,13 @@ import {
   faSigning,
   faUserPlus,
   faBasketShopping,
+  faRightFromBracket,
+  faRightToBracket,
+  
 } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
+import Dropdown from "../Dropdown/Dropdown";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,47 +37,31 @@ const Navbar = () => {
           <div className="flex items-center ">
             <div className="flex-shrink-0">
               <Link href="#" className="">
-                <Image src="/logo.png" width={60} height={50} alt="logo" />
+                <Image src="/photo.png" width={80} height={80} alt="logo" />
               </Link>
             </div>
             <div className="hidden md:block ">
               <div className="ml-10 flex items-baseline space-x-8">
                 <Link
-                  href="/products"
+                  href="/"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Шинэ
+                  Нүүр
                 </Link>
 
                 <Link
-                  href="#"
+                  href="/"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Эрэгтэй
+                  Бидний тухай
                 </Link>
                 <Link
                   href="#"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Эмэгтэй
+                  Холбоо барих
                 </Link>
-                <div className="hidden md:block">
-                  <div className="ml-4 flex items-center md:ml-6 ">
-                    <div className="relative  ">
-                      <input
-                        type="text"
-                        placeholder="Search"
-                        className="bg-gray-700 text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                      />
-                      <Link href="#">
-                        <FontAwesomeIcon
-                          icon={faSearch}
-                          style={{ fontSize: 20, color: "white" }}
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+              
                 {session.status === "unauthenticated" && (
                   <div>
                     <Link
@@ -121,7 +109,7 @@ const Navbar = () => {
                  >
                    гарах
                    <FontAwesomeIcon
-                     icon={faBasketShopping}
+                     icon={faRightFromBracket}
                      style={{ fontSize: 15, color: "white", marginLeft: 8 }}
                    />
                  </Link>
@@ -176,7 +164,37 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+
+        
       </div>
+     
+     <div className="flex flex-row p-4">
+
+     <Dropdown/>
+        
+        <div className="hidden md:block">
+        
+       
+                  <div className="ml-4 flex items-center md:ml-6 ">
+                    <div className="relative  ">
+                      <input
+                        type="text"
+                        placeholder="Search"
+                        className="w-[700px] bg-gray-700 text-white rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                      />
+                      <Link href="#">
+                        <FontAwesomeIcon
+                          icon={faSearch}
+                          style={{ fontSize: 20, color: "white" }}
+                        />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+
+
+     </div>
+      
 
       <div
         className={`${isOpen ? "block" : "hidden"} md:hidden`}
@@ -184,22 +202,22 @@ const Navbar = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link
-            href="/products"
+            href="/"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
-            Шинэ
+            Нүүр
           </Link>
           <Link
             href="#"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
-            Эмэгтэй
+            Бидний тухай
           </Link>
           <Link
             href="#"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
-            Эрэгтэй
+            Холбоо барих
           </Link>
 
           {session.status === "unauthenticated" && (
@@ -237,9 +255,12 @@ const Navbar = () => {
              icon={faBasketShopping}
              style={{ fontSize: 15, color: "white", marginLeft: 8 }}
            />
+            
          </Link>
+         
 
       )}
+        
        
 
           {session.status === "authenticated" && (
@@ -251,7 +272,7 @@ const Navbar = () => {
           >
             гарах
             <FontAwesomeIcon
-              icon={faBasketShopping}
+              icon={faRightToBracket}
               style={{ fontSize: 15, color: "white", marginLeft: 8 }}
             />
           </Link>
@@ -275,7 +296,9 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+  
     </nav>
+
   );
 };
 

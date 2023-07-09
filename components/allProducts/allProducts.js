@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const Products = () => {
+const allProducts = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -75,4 +75,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default allProducts;
