@@ -202,18 +202,21 @@ const Navbar = () => {
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           <Link
+          onClick={toggleNavbar}
             href="/"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Нүүр
           </Link>
           <Link
+           onClick={toggleNavbar}
             href="#"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Бидний тухай
           </Link>
           <Link
+           onClick={toggleNavbar}
             href="#"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
@@ -223,6 +226,7 @@ const Navbar = () => {
           {session.status === "unauthenticated" && (
             <div>
               <Link
+               onClick={toggleNavbar}
                 href="/login"
                 className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
@@ -234,6 +238,7 @@ const Navbar = () => {
               </Link>
 
               <Link
+               onClick={toggleNavbar}
                 href="/register"
                 className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
@@ -247,6 +252,7 @@ const Navbar = () => {
           )}
       {session.status === "authenticated" && (
            <Link
+           onClick={toggleNavbar}
            href="/"
            className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
          >
