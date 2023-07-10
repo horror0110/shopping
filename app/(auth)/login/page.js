@@ -27,6 +27,7 @@ const Login = () => {
 
   if (session.status === 'authenticated') {
     router?.push('/');
+    console.log(session.data.user.email);
   }
 
   const handleSubmit =  (e) => {

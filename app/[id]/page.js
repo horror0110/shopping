@@ -6,9 +6,13 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Loading from "@/components/Loading/Loading";
 import React, { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Page = ({ params }) => {
   const [product, setProduct] = useState(null);
+  const { status: sessionStatus } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     fetch(`api/products/${params.id}`, {
@@ -25,6 +29,17 @@ const Page = ({ params }) => {
         console.error("Error:", error);
       });
   }, [params.id]);
+
+  const moveOrder = () => {
+    if (sessionStatus === "unauthenticated") {
+      router.push("/login");
+      console.log("daragdlaa");
+    } else if (sessionStatus === "loading") {
+      return <Loading />;
+    } else if (sessionStatus === "authenticated") {
+      router.push("/orders");
+    }
+  };
 
   return (
     <div className="container mx-auto p-4">
@@ -52,10 +67,14 @@ const Page = ({ params }) => {
               ))}
             </Carousel>
           </div>
-          
+
           <div className="mt-4">
-            <h2 className="text-xl font-bold mb-2">Үнэ: {thousandify(product.price)}₮</h2>
-            <h3 className="text-lg font-bold mb-2">Бэлэн байгаа: {product.balance}</h3>
+            <h2 className="text-xl font-bold mb-2">
+              Үнэ: {thousandify(product.price)}₮
+            </h2>
+            <h3 className="text-lg font-bold mb-2">
+              Бэлэн байгаа: {product.balance}
+            </h3>
             <div className="flex space-x-4">
               {product.color.map((color, index) => (
                 <div
@@ -76,13 +95,15 @@ const Page = ({ params }) => {
               ))}
             </div>
           </div>
-          
+
           <div className="mt-4">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button
+              onClick={moveOrder}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mt-4 w-[150px]"
+            >
               Сагсанд хийх
             </button>
           </div>
-          
         </div>
       ) : (
         <Loading />

@@ -3,10 +3,14 @@
 import React, { useState, useEffect, useRef } from "react";
 const thousandify = require("thousandify");
 import Link from "next/link";
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const Vitamin = () => {
   const [products, setProducts] = useState([]);
   const productsContainerRef = useRef(null);
+  const { data: session, status: sessionStatus } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     fetch("api/categories/64ab92b4fdae604aa01fb619/products", {
@@ -27,6 +31,42 @@ const Vitamin = () => {
   const handleNextClick = () => {
     const container = productsContainerRef.current;
     container.scrollBy({ left: container.offsetWidth, behavior: "smooth" });
+  };
+  const moveOrder = (el) => {
+   
+
+    if (sessionStatus === 'unauthenticated') {
+      router.push('/login');
+    } else if (sessionStatus === 'authenticated') {
+      const orderData = {
+        email: session.user.email,
+        name: el.name,
+        description: el.description,
+        photo: el.photo, // Use el.photo instead of data.photo
+        category: el.category,
+        price: el.price,
+        balance: el.balance,
+        color: el.color,
+        size: el.size,
+      };
+      fetch('api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert('sagsand amjilttai nemegdlee');
+          } else {
+            throw new Error('Failed to add order');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
   return (
     <div>
@@ -81,12 +121,12 @@ const Vitamin = () => {
                     ))}
                   </div>
                   <div className="flex flex-col ">
-                    <Link
-                      href="/"
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mt-4 w-[150px]"
-                    >
-                      Сагсанд хийх
-                    </Link>
+                  <button
+                    onClick={()=>moveOrder(product)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mt-4 w-[150px]"
+                  >
+                    Сагсанд хийх
+                  </button>
 
                     <Link
                       href={product._id}
