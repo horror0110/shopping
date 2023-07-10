@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const productSchema = new Schema(
+const productItem = new Schema(
   {
     name: {
         type: String,
@@ -31,14 +31,14 @@ const productSchema = new Schema(
       },
       color: [{
         type: String,
-        required: true
+        
       }],
       size: [{
         type: String,
-        required: true
+
       }]
 
   },
   { timestamps: true }
 );
-export default mongoose.models.Product || mongoose.model("Product", productSchema);
+export default mongoose.models.Item || mongoose.model("Item", productItem);

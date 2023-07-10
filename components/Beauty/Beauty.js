@@ -1,6 +1,6 @@
 import React , {useState ,useEffect , useRef} from 'react'
 const thousandify = require('thousandify');
-
+import Link from "next/link";
 const Beauty = () => {
 
     const [products, setProducts] = useState([]);
@@ -53,12 +53,21 @@ const Beauty = () => {
             </p>
          
           </div>
-          <div>
-           
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">
-              Сагсанд хийх
-            </button>
-          </div>
+          <div className="flex flex-col ">
+                    <Link
+                      href="/"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mt-4 w-[150px]"
+                    >
+                      Сагсанд хийх
+                    </Link>
+
+                    <Link
+                      href={product._id}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mt-4 w-[150px]"
+                    >
+                      Дэлгэрэнгүй
+                    </Link>
+                  </div>
         </div>
       ))}
     </div>

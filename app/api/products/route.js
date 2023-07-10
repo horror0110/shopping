@@ -1,4 +1,4 @@
-import Product from "@/models/Product";
+import Item from "@/models/Item";
 import connectDB from "@/utils/db";
 import { NextResponse } from "next/server";
 
@@ -22,7 +22,7 @@ export const POST = async (request) => {
 
   await connectDB();
 
-  const newUser = new Product({
+  const newUser = new Item({
     name,
     description,
     photo,
@@ -35,7 +35,7 @@ export const POST = async (request) => {
   });
 
   try {
-    await Product.create(newUser);
+    await Item.create(newUser);
     return new NextResponse("Product has been created", {
       headers: {corsHeaders },
       status: 201,
@@ -49,7 +49,7 @@ export const GET = async (request) => {
     connectDB();
   
     try {
-      const products = await Product.find();
+      const products = await Item.find();
   
   
       return new NextResponse(JSON.stringify(products), {

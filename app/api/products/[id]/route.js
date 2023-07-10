@@ -13,7 +13,7 @@ export const GET = async (request , {params}) => {
     connectDB();
   
     try {
-      const products = await Item.find({category: params.id});
+      const products = await Item.findById(params.id);
   
   
       return new NextResponse(JSON.stringify(products), {
