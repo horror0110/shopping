@@ -7,7 +7,7 @@ const Vitamin = () => {
     const productsContainerRef = useRef(null);
   
     useEffect(() => {
-      fetch(`api/categories/64aa8b1bf7ebb880b3d90142/products`, {
+      fetch(`api/categories/64ab92b4fdae604aa01fb619/products`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

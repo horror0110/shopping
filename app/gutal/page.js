@@ -1,7 +1,9 @@
+
+"use client";
 import React, { useState, useEffect, useRef } from "react";
 const thousandify = require("thousandify");
 
-const Sneakers = () => {
+const Gutal = () => {
   const [products, setProducts] = useState([]);
   const productsContainerRef = useRef(null);
 
@@ -96,4 +98,4 @@ const Sneakers = () => {
   );
 };
 
-export default Sneakers;
+export default Gutal;

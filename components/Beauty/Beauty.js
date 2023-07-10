@@ -7,7 +7,7 @@ const Beauty = () => {
     const productsContainerRef = useRef(null);
   
     useEffect(() => {
-      fetch("api/categories/64aa8b6cf7ebb880b3d90146/products", {
+      fetch("api/categories/64ab9298fdae604aa01fb617/products", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

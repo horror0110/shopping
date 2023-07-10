@@ -1,12 +1,14 @@
+
+"use client";
 import React, { useState, useEffect, useRef } from "react";
 const thousandify = require("thousandify");
 
-const Sneakers = () => {
+const Beauty = () => {
   const [products, setProducts] = useState([]);
   const productsContainerRef = useRef(null);
 
   useEffect(() => {
-    fetch("api/categories/64ab92dafdae604aa01fb61b/products", {
+    fetch("api/categories/64ab9298fdae604aa01fb617/products", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +30,7 @@ const Sneakers = () => {
   return (
     <div>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">Гутал , пүүзнүүд</h1>
+        <h1 className="text-2xl font-bold mb-4">Гоо сайхны бараа</h1>
         <div className="overflow-x-auto" ref={productsContainerRef}>
           <div className="flex space-x-4">
             {products.map((product, index) => (
@@ -96,4 +98,4 @@ const Sneakers = () => {
   );
 };
 
-export default Sneakers;
+export default Beauty;
