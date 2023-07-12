@@ -9,27 +9,12 @@ export const corsHeaders = {
 };
 
 
-export const GET = async (request , {params}) => {
-    connectDB();
-  
-    try {
-      const products = await Basket.find({email: params.id});
-  
-  
-      return new NextResponse(JSON.stringify(products), {
-        status: 200,
-        headers: { "content-type": "application/json", corsHeaders },
-      });
-    } catch (err) {
-        return new NextResponse(err.message, { status: 500 });
-    }
-  };
 
   export const DELETE = async (request , {params}) => {
     connectDB();
   
     try {
-      const products = await Basket.findByIdAndDelete(params.id);
+      const products = await Basket.deleteMany({email:params.id});
   
       return new NextResponse(JSON.stringify(products), {
         status: 200,

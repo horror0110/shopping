@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 
 const Page = ({ params }) => {
   const [product, setProduct] = useState(null);
-  const { status: sessionStatus } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -30,14 +30,40 @@ const Page = ({ params }) => {
       });
   }, [params.id]);
 
-  const moveOrder = () => {
-    if (sessionStatus === "unauthenticated") {
-      router.push("/login");
-      console.log("daragdlaa");
-    } else if (sessionStatus === "loading") {
-      return <Loading />;
-    } else if (sessionStatus === "authenticated") {
-      router.push("/orders");
+  const moveOrder = (el) => {
+   
+
+    if (sessionStatus === 'unauthenticated') {
+      router.push('/login');
+    } else if (sessionStatus === 'authenticated') {
+      const orderData = {
+        email: session.user.email,
+        name: el.name,
+        description: el.description,
+        photo: el.photo, // Use el.photo instead of data.photo
+        category: el.category,
+        price: el.price,
+        balance: el.balance,
+        color: el.color,
+        size: el.size,
+      };
+      fetch('api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert('sagsand amjilttai nemegdlee');
+          } else {
+            throw new Error('Failed to add order');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -98,7 +124,7 @@ const Page = ({ params }) => {
 
           <div className="mt-4">
             <button
-              onClick={moveOrder}
+              onClick={()=>moveOrder(product)}
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded mt-4 w-[150px]"
             >
               Сагсанд хийх

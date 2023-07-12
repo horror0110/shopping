@@ -7,7 +7,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import Footer from "@/components/Footer/Footer";
 import AuthProvider from "@/components/AuthProvider/AuthProvider";
-import { allProvider } from "@/context/allContext";
+import { ThemeProvider, allProvider } from "@/context/ThemeContext";
 
 config.autoAddCss = false;
 
@@ -22,8 +22,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <allProvider>
-          <AuthProvider>
+     <ThemeProvider>
+
+     <AuthProvider>
             <div className=" ">
               <header>
                 <Navbar />
@@ -36,7 +37,17 @@ export default function RootLayout({ children }) {
               </footer>
             </div>
           </AuthProvider>
-        </allProvider>
+
+
+     </ThemeProvider>
+
+       
+
+
+        
+        
+        
+       
       </body>
     </html>
   );
