@@ -13,13 +13,13 @@ export const POST = async (request , {params}) => {
    
   
     try {
-        const {name , userName , phone , address , color , size , totalPrice} = await request.json();
+        const {name , productName , phone , address , color , size , totalPrice} = await request.json();
 
         connectDB();
 
         const newOrder = new Checkout({
             name,
-            userName,
+            productName,
             phone,
             address,
             color,

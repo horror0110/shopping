@@ -9,6 +9,7 @@ const Checkout = () => {
   const { data: session, status: sessionStatus } = useSession();
   const { data: selectedItems } = useContext(ThemeContext);
   const router = useRouter();
+  console.log(selectedItems);
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -25,6 +26,7 @@ const Checkout = () => {
       size: selectedItems.map((item) => item.selectedSize).join(', '),
       totalPrice: selectedItems[0].niitUne
     };
+  
 
     fetch('api/checkout', {
       method: 'POST',
@@ -60,6 +62,7 @@ const Checkout = () => {
         .catch((error) => {
           console.log(error);
         });
+        router.push("/");
   };
 
   return (
