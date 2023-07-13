@@ -4,6 +4,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Loading from '@/components/Loading/Loading';
+import Spinner from '@/components/Loading/Loading';
 
 const Login = () => {
   const session = useSession();
@@ -41,7 +42,7 @@ const Login = () => {
   };
 
   if (session.status === 'loading') {
-    return <Loading />;
+    return <Spinner />;
   }
 
   return (

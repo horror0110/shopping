@@ -5,18 +5,24 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Loading from '@/components/Loading/Loading';
 import { ThemeContext } from '@/context/ThemeContext';
+import Spinner from '@/components/Loading/Loading';
+const thousandify = require("thousandify");
 
 const Orders = () => {
   const [products, setProducts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [checkedItems, setCheckedItems] = useState({});
   const [checkedSizes, setCheckedSizes] = useState({});
+  const [message , setMessage] = useState("");
   const { data: session, status: sessionStatus } = useSession();
   const router = useRouter();
 
-  const { setData } = useContext(ThemeContext);
+  const { setData , setSpinner } = useContext(ThemeContext);
 
   useEffect(() => {
+
+    setSpinner(true);
+    
     if (!session) {
       router.push('/login');
     } else if (session?.user?.email) {
@@ -28,10 +34,12 @@ const Orders = () => {
       })
         .then((res) => res.json())
         .then((data) => {
+          setSpinner(false);
           setProducts(data);
           calculateTotalPrice(data);
         })
         .catch((error) => {
+          setSpinner(false);
           console.error('Error:', error);
         });
     }
@@ -76,20 +84,30 @@ const Orders = () => {
   };
 
   const handleBuyProduct = () => {
+    // Check if there are any selected items
+    const hasSelectedItems = Object.values(checkedItems).some((color) => color !== '') ||
+      Object.values(checkedSizes).some((size) => size !== '');
+  
+    if (!hasSelectedItems) {
+      
+      return setMessage("өнгө болон размераа сонгоно уу!")
+    }
+  
     const selectedItems = products.map((product) => ({
       ...product,
       selectedColor: checkedItems[product._id] || '',
       selectedSize: checkedSizes[product._id] || '',
       niitUne: totalPrice,
     }));
-
+  
     setData(selectedItems);
-
+  
     router.push('/checkout');
   };
+  
 
   if (sessionStatus === 'loading') {
-    return <Loading />;
+    return <Spinner />;
   }
 
   if (!session) {
@@ -106,7 +124,7 @@ const Orders = () => {
           <div className="details-container">
             <h1 className="product-name text-2xl font-bold mb-2">{el.name}</h1>
             <p className="product-description mb-2">{el.description}</p>
-            <p className="product-price mb-2">{el.price}₮</p>
+            <p className="product-price mb-2 font-bold ">{thousandify(el.price)}₮</p>
             {el.color.length > 0 && (
               <p className="font-bold mb-2">Бэлэн байгаа өнгө</p>
             )}
@@ -147,16 +165,19 @@ const Orders = () => {
         </div>
       ))}
       {products.length > 0 && (
-        <div className="total-price text-xl font-bold mt-4">
-          Total Price: {totalPrice}₮
+        <div className="m-4 text-xl font-bold">
+          Нийт үнэ: {thousandify(totalPrice)}₮
         </div>
       )}
-      <button
-        onClick={handleBuyProduct}
-        className="buy-button bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md mt-4"
-      >
-        Сагсан доторх барааг худалдаж авах
-      </button>
+      {products.length > 0 && (
+        <button
+          onClick={handleBuyProduct}
+          className="m-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
+        >
+          Сагсан доторх барааг худалдаж авах
+        </button>
+      )}
+      <div className='m-4 text-red-600 font-bold'>{message}</div>
     </div>
   );
 };

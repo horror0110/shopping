@@ -1,18 +1,23 @@
 
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 const thousandify = require("thousandify");
 import Link from "next/link";
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { ThemeContext } from "@/context/ThemeContext";
+import Addcart from "@/components/AddCart/AddCart";
+import Spinner from "@/components/Loading/Loading";
 
 const Vitamin = () => {
   const [products, setProducts] = useState([]);
   const productsContainerRef = useRef(null);
   const { data: session, status: sessionStatus } = useSession();
   const router = useRouter();
+  const {handleAddToCart , setSpinner} = useContext(ThemeContext);
 
   useEffect(() => {
+    setSpinner(true);
     fetch("api/categories/64ab92b4fdae604aa01fb619/products", {
       method: "GET",
       headers: {
@@ -21,9 +26,11 @@ const Vitamin = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        setSpinner(false);
         setProducts(data);
       })
       .catch((error) => {
+        setSpinner(false);
         console.error("Error:", error);
       });
   }, []);
@@ -33,6 +40,8 @@ const Vitamin = () => {
     container.scrollBy({ left: container.offsetWidth, behavior: "smooth" });
   };
   const moveOrder = (el) => {
+
+    setSpinner(true);
    
 
     if (sessionStatus === 'unauthenticated') {
@@ -58,18 +67,22 @@ const Vitamin = () => {
       })
         .then((response) => {
           if (response.ok) {
-            alert('sagsand amjilttai nemegdlee');
+            setSpinner(false);
+            handleAddToCart();
           } else {
             throw new Error('Failed to add order');
           }
         })
         .catch((error) => {
+          setSpinner(false);
           console.log(error);
         });
     }
   };
   return (
     <div>
+      <Spinner/>
+      <Addcart/>
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">Уураг , Витамин</h1>
         <div className="overflow-x-auto" ref={productsContainerRef}>

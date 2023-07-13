@@ -5,16 +5,21 @@ const thousandify = require("thousandify");
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Loading from "@/components/Loading/Loading";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect , useContext } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ThemeContext } from "@/context/ThemeContext";
+import Addcart from "@/components/AddCart/AddCart";
+import Spinner from "@/components/Loading/Loading";
 
 const Page = ({ params }) => {
   const [product, setProduct] = useState(null);
   const { data: session, status: sessionStatus } = useSession();
   const router = useRouter();
+  const {handleAddToCart , setSpinner} = useContext(ThemeContext);
 
   useEffect(() => {
+    setSpinner(true);
     fetch(`api/products/${params.id}`, {
       method: "GET",
       headers: {
@@ -23,14 +28,17 @@ const Page = ({ params }) => {
     })
       .then((res) => res.json())
       .then((data) => {
+        setSpinner(false);
         setProduct(data);
       })
       .catch((error) => {
+        setSpinner(false);
         console.error("Error:", error);
       });
   }, [params.id]);
 
   const moveOrder = (el) => {
+    setSpinner(true);
    
 
     if (sessionStatus === 'unauthenticated') {
@@ -56,18 +64,23 @@ const Page = ({ params }) => {
       })
         .then((response) => {
           if (response.ok) {
-            alert('sagsand amjilttai nemegdlee');
+            setSpinner(false);
+             handleAddToCart();
           } else {
             throw new Error('Failed to add order');
           }
         })
         .catch((error) => {
           console.log(error);
+          setSpinner(false);
         });
     }
   };
 
   return (
+    <div>
+      <Spinner/>
+ <Addcart/>
     <div className="container mx-auto p-4">
       {product ? (
         <div>
@@ -135,6 +148,9 @@ const Page = ({ params }) => {
         <Loading />
       )}
     </div>
+
+    </div>
+   
   );
 };
 

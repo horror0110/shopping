@@ -14,11 +14,13 @@ export const POST = async (request) => {
     });
   }
 
+  const lowercaseEmail = email.toLowerCase(); // Convert email to lowercase
+
   await connectDB();
 
   const hashedPassword = await bcrypt.hash(password, 5);
 
-  const existingUser = await Users.findOne({ email }); // Check if user with the same email already exists
+  const existingUser = await Users.findOne({ email: lowercaseEmail }); // Check if user with the same email already exists
 
   if (existingUser) {
     return new NextResponse("Email already exists", {
@@ -28,7 +30,7 @@ export const POST = async (request) => {
 
   const newUser = new Users({
     name,
-    email,
+    email: lowercaseEmail, // Save lowercase email in the database
     password: hashedPassword,
   });
 

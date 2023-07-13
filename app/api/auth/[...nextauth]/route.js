@@ -15,7 +15,7 @@ const handler = NextAuth({
 
         try {
           const user = await Users.findOne({
-            email: credentials.email,
+            email: credentials.email.toLowerCase(),
           });
 
           if (user) {

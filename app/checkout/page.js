@@ -3,20 +3,56 @@ import { useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { ThemeContext } from '@/context/ThemeContext';
 import { useSession } from 'next-auth/react';
+import Spinner from '@/components/Loading/Loading';
+const thousandify = require("thousandify");
 
 
 const Checkout = () => {
   const { data: session, status: sessionStatus } = useSession();
-  const { data: selectedItems } = useContext(ThemeContext);
+  const { data: selectedItems , openSuccessModal , setSpinner } = useContext(ThemeContext);
   const router = useRouter();
   console.log(selectedItems);
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [message , setMessage] = useState('');
+
+  const deleteBasket = ()=>{
+    setSpinner(true);
+    fetch(`api/checkout/${session.user.email}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+           setSpinner(false);
+        } else {
+          throw new Error('Failed to place order');
+          setSpinner(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setSpinner(false);
+      });
+      router.push("/");
+  }
 
   const handlePlaceOrder = (e) => {
+    setSpinner(true);
     e.preventDefault();
+
+    if(!name || !phone || !address){
+      return setMessage("Талбаруудыг бөглөнө үү!!")
+    }
+    if(phone.length <8){
+      return setMessage("Утасны дугаараа зөв оруулна уу");
+    }
+
+
     const orderData = {
       name: name,
       productName: selectedItems.map((item) => item.name).join(', '),
@@ -37,37 +73,29 @@ const Checkout = () => {
     })
       .then((response) => {
         if (response.ok) {
-          alert('Order placed successfully');
+          setSpinner(false);
+          deleteBasket();
+          openSuccessModal();
         } else {
           throw new Error('Failed to place order');
+          setSpinner(false);
         }
       })
       .catch((error) => {
+        setSpinner(false);
         console.log(error);
       });
 
-      fetch(`api/checkout/${session.user.email}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((response) => {
-          if (response.ok) {
-             console.log(response);
-          } else {
-            throw new Error('Failed to place order');
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-        router.push("/");
+    
   };
 
   return (
+    <div>
+       <Spinner/>
     <div className="checkout-container">
       <h1 className="text-3xl font-bold mb-6">Захиалга</h1>
+      <h1 className="text-2xl font-bold mb-6">Захиалгын дүн: {thousandify(selectedItems[0].niitUne)}₮</h1>
+      
       <div className="selected-items-container">
         {selectedItems.map((item) => (
           <div key={item._id} className="selected-item flex items-center mb-4">
@@ -94,6 +122,7 @@ const Checkout = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="form-input"
+          required
         />
 
         <label htmlFor="phone">Утас:</label>
@@ -103,6 +132,7 @@ const Checkout = () => {
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
           className="form-input"
+          required
         />
 
         <label htmlFor="address">Хаяг:</label>
@@ -111,7 +141,10 @@ const Checkout = () => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           className="form-input"
+          required
         ></textarea>
+
+        <p className='text-red-600 bold'>{message}</p>
 
         <button
           onClick={handlePlaceOrder}
@@ -120,6 +153,9 @@ const Checkout = () => {
           Захиалга хийх
         </button>
       </form>
+
+    </div>
+   
 
       <style jsx>{`
         .checkout-container {

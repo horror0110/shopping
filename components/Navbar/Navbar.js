@@ -50,13 +50,13 @@ const Navbar = () => {
                 </Link>
 
                 <Link
-                  href="/"
+                  href="/about"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Бидний тухай
                 </Link>
                 <Link
-                  href="#"
+                  href="/contact"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Холбоо барих
@@ -210,14 +210,14 @@ const Navbar = () => {
           </Link>
           <Link
            onClick={toggleNavbar}
-            href="#"
+            href="/about"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Бидний тухай
           </Link>
           <Link
            onClick={toggleNavbar}
-            href="#"
+            href="/contact"
             className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
           >
             Холбоо барих

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef , useContext } from 'react';
 import thousandify from 'thousandify';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { ThemeContext } from '@/context/ThemeContext';
 
 
 const Beauty = () => {
@@ -9,6 +10,7 @@ const Beauty = () => {
   const productsContainerRef = useRef(null);
   const { data: session, status: sessionStatus } = useSession();
   const router = useRouter();
+  const {handleAddToCart} = useContext(ThemeContext);
 
   useEffect(() => {
     fetch('api/categories/64ab9298fdae604aa01fb617/products', {
@@ -57,7 +59,7 @@ const Beauty = () => {
       })
         .then((response) => {
           if (response.ok) {
-            alert('sagsand amjilttai nemegdlee');
+            handleAddToCart();
           } else {
             throw new Error('Failed to add order');
           }
