@@ -1,19 +1,24 @@
-import Link from "next/link";
+
+"use client";
 import React, { useState, useEffect, useRef, useContext } from "react";
 const thousandify = require("thousandify");
+import Link from "next/link";
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ThemeContext } from "@/context/ThemeContext";
+import Addcart from "@/components/AddCart/AddCart";
+import Spinner from "@/components/Loading/Loading";
 
-const Sneakers = () => {
+const Travel = () => {
   const [products, setProducts] = useState([]);
   const productsContainerRef = useRef(null);
   const { data: session, status: sessionStatus } = useSession();
   const router = useRouter();
-  const {handleAddToCart} = useContext(ThemeContext);
+  const {handleAddToCart , setSpinner} = useContext(ThemeContext);
 
   useEffect(() => {
-    fetch("api/categories/64ab92dafdae604aa01fb61b/products", {
+    setSpinner(true);
+    fetch("api/categories/64b122ea3db2ba8ee3e19688/products", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -21,9 +26,11 @@ const Sneakers = () => {
     })
       .then((res) => res.json())
       .then((data) => {
+        setSpinner(false);
         setProducts(data);
       })
       .catch((error) => {
+        setSpinner(false);
         console.error("Error:", error);
       });
   }, []);
@@ -33,6 +40,8 @@ const Sneakers = () => {
     container.scrollBy({ left: container.offsetWidth, behavior: "smooth" });
   };
   const moveOrder = (el) => {
+
+    setSpinner(true);
    
 
     if (sessionStatus === 'unauthenticated') {
@@ -58,20 +67,24 @@ const Sneakers = () => {
       })
         .then((response) => {
           if (response.ok) {
+            setSpinner(false);
             handleAddToCart();
           } else {
             throw new Error('Failed to add order');
           }
         })
         .catch((error) => {
+          setSpinner(false);
           console.log(error);
         });
     }
   };
   return (
     <div>
+      <Spinner/>
+      <Addcart/>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">Гутал , пүүзнүүд</h1>
+        <h1 className="text-2xl font-bold mb-4">Аялал , Зугаалга</h1>
         <div className="overflow-x-auto" ref={productsContainerRef}>
           <div className="flex space-x-4">
             {products.map((product, index) => (
@@ -120,7 +133,6 @@ const Sneakers = () => {
                       </div>
                     ))}
                   </div>
-
                   <div className="flex flex-col ">
                   <button
                     onClick={()=>moveOrder(product)}
@@ -142,14 +154,9 @@ const Sneakers = () => {
           </div>
         </div>
       </div>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-        onClick={handleNextClick}
-      >
-        Next
-      </button>
+    
     </div>
   );
 };
 
-export default Sneakers;
+export default Travel;

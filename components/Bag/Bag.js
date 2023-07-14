@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ThemeContext } from '@/context/ThemeContext';
 
 
-const Beauty = () => {
+const Bag = () => {
   const [products, setProducts] = useState([]);
   const productsContainerRef = useRef(null);
   const { data: session, status: sessionStatus } = useSession();
@@ -13,7 +13,7 @@ const Beauty = () => {
   const {handleAddToCart} = useContext(ThemeContext);
 
   useEffect(() => {
-    fetch('api/categories/64b11b533db2ba8ee3e1963b/products', {
+    fetch('api/categories/64b1210f3db2ba8ee3e19674/products', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ const Beauty = () => {
   return (
     <div>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">Гоо сайхны хэрэгсэл</h1>
+        <h1 className="text-2xl font-bold mb-4">Цүнх , Чемодан</h1>
         <div className="overflow-x-auto" ref={productsContainerRef}>
           <div className="flex space-x-4">
             {products.map((product, index) => (
@@ -125,4 +125,4 @@ const Beauty = () => {
   );
 };
 
-export default Beauty;
+export default Bag;

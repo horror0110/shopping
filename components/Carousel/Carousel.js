@@ -2,9 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import Sneakers from "../Sneakers/Sneakers";
-import Vitamin from "../Vitamin/Vitamin";
 import Beauty from "../Beauty/Beauty";
+import Man from "../Man/Man";
+import Woman from "../Woman/Woman";
+import Shoes from "../Shoes/Shoes";
+import Bag from "../Bag/Bag";
+import Travel from "@/app/travel/page";
+import Homeproduct from "../Home/Home";
 
 const Carousel = () => {
  
@@ -46,9 +50,13 @@ const Carousel = () => {
         ))}
       </Swiper>
 
-      <Sneakers/>
-      <Vitamin/>
+      <Man/>
+      <Woman/>
       <Beauty/>
+      <Shoes/>
+      <Bag/>
+      <Travel/>
+      <Homeproduct/>
 
       
 

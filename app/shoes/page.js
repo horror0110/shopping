@@ -9,7 +9,7 @@ import { ThemeContext } from "@/context/ThemeContext";
 import Addcart from "@/components/AddCart/AddCart";
 import Spinner from "@/components/Loading/Loading";
 
-const Gutal = () => {
+const Eregtey = () => {
   const [products, setProducts] = useState([]);
   const productsContainerRef = useRef(null);
   const { data: session, status: sessionStatus } = useSession();
@@ -18,7 +18,7 @@ const Gutal = () => {
 
   useEffect(() => {
     setSpinner(true);
-    fetch("api/categories/64ab92dafdae604aa01fb61b/products", {
+    fetch("api/categories/64b11db03db2ba8ee3e1965f/products", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const Gutal = () => {
       <Spinner/>
       <Addcart/>
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">Гутал , пүүзнүүд</h1>
+        <h1 className="text-2xl font-bold mb-4">Гутал</h1>
         <div className="overflow-x-auto" ref={productsContainerRef}>
           <div className="flex space-x-4">
             {products.map((product, index) => (
@@ -164,4 +164,4 @@ const Gutal = () => {
   );
 };
 
-export default Gutal;
+export default Eregtey;

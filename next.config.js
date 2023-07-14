@@ -1,5 +1,8 @@
 // next.config.js
 module.exports = {
+  images: {
+    domains: ['mrp.market.mn'],
+  },
     async headers() {
       return [
         {
